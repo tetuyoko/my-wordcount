@@ -23,11 +23,6 @@ jobs:
            ~/.cargo/git/db/
            target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    - name: Intall toolchain
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        components: rustfmt, clippy
     - name: Run `cargo fmt`
       uses: actions-rs/cargo@v1
       with:
