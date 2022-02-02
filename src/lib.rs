@@ -1,20 +1,30 @@
+//! wordcount is simply charactor, word, line appearence freaquency counter;
+//! If you access more details about this function, see this document [`count`](fn.count.html)
+#![warn(missing_docs)]
+
 use regex::Regex;
 use std::collections::HashMap;
 use std::io::BufRead;
 
+/// Option that [`count`](fn.count.html) uses
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CountOption {
+    /// by charactor
     Char,
+    /// by word
     Word,
+    /// by line
     Line,
 }
 
+/// Default is [`Word`](enum.CountOption.html#variant.Word)
 impl Default for CountOption {
     fn default() -> Self {
         CountOption::Word
     }
 }
 
+/// Count up from text file
 pub fn count(input: impl BufRead, option: CountOption) -> HashMap<String, usize> {
     let re = Regex::new(r"\w+").unwrap();
     let mut freqs = HashMap::new();
@@ -38,4 +48,17 @@ pub fn count(input: impl BufRead, option: CountOption) -> HashMap<String, usize>
         }
     }
     freqs
+}
+
+#[test]
+fn wordcount_works() {
+    use std::io::Cursor;
+
+    let mut exp = HashMap::new();
+    exp.insert("aa".to_string(), 1);
+    exp.insert("bb".to_string(), 1);
+    exp.insert("cc".to_string(), 1);
+    exp.insert("dd".to_string(), 1);
+
+    assert_eq!(count(Cursor::new("aa bb cc dd"), CountOption::Word), exp);
 }
