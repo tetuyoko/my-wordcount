@@ -62,3 +62,19 @@ fn wordcount_works() {
 
     assert_eq!(count(Cursor::new("aa bb cc dd"), CountOption::Word), exp);
 }
+
+// assert for each pairs of map.
+macro_rules! assert_map {
+    ($expr: expr, { $($key: expr => $value: expr), * }) => {
+        $(assert_eq!($expr[$key], $value));*
+    };
+}
+
+#[test]
+fn wordcount_works3() {
+    use std::io::Cursor;
+
+    let freqs = count(Cursor::new("aa cc dd"), CountOption::Word);
+    assert_eq!(freqs.len(), 3);
+    assert_map!(freqs, {"aa" => 1, "cc" => 1, "dd" => 1} );
+}
