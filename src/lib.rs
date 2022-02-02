@@ -25,6 +25,26 @@ impl Default for CountOption {
 }
 
 /// Count up from text file
+/// * [`CountOption::Line`](enum.CountOption.html#variant.Line): Countlines that separated `\n` or `\r\n`
+///
+/// # Examples
+///  Count inputing word frequency.
+///
+/// ``` rust
+/// use std::io::Cursor;
+/// use my_wordcount::{count, CountOption};
+///
+/// let mut input = Cursor::new("aa bb cc bb");
+/// let freq = count(input, CountOption::Word);
+///
+/// assert_eq!(freq["aa"], 1);
+/// assert_eq!(freq["bb"], 2);
+/// assert_eq!(freq["cc"], 1);
+/// ```
+///
+/// # Panics
+///
+///
 pub fn count(input: impl BufRead, option: CountOption) -> HashMap<String, usize> {
     let re = Regex::new(r"\w+").unwrap();
     let mut freqs = HashMap::new();
